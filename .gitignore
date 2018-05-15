@@ -1,7 +1,3 @@
 .vs/
-SentimentAnalysis/obj/
-SentimentAnalysis/bin/Debug/
-HelloWorld-Iris/obj/
-DiabetesPrediction/bin/Debug/
-DiabetesPrediction/obj/
-HelloWorld-Iris/bin/Debug/
+obj/
+bin/

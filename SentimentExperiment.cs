@@ -1,21 +1,33 @@
-﻿using System;
+﻿using Microsoft.ML;
 using Microsoft.ML.Models;
-using Microsoft.ML.Runtime;
 using Microsoft.ML.Runtime.Api;
 using Microsoft.ML.Trainers;
 using Microsoft.ML.Transforms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.ML;
 
-namespace SentimentAnalysis
+namespace MLExperiments
 {
-    class Program
+    public class SentimentData
     {
-        const string _dataPath = @"..\..\data\imdb_labelled.txt";
-        const string _testDataPath = @"..\..\data\yelp_labelled.txt";
+        [Column(ordinal: "0")]
+        public string SentimentText;
+        [Column(ordinal: "1", name: "Label")]
+        public float Sentiment;
+    }
 
-        static void Main(string[] args)
+    public class SentimentPrediction
+    {
+        [ColumnName("PredictedLabel")]
+        public bool Sentiment;
+    }
+    public class SentimentExperiment
+    {
+        const string _dataPath = @"Data\sentiment-imdb_labelled.txt";
+        const string _testDataPath = @"Data\sentiment-yelp_labelled.txt";
+
+        public static void Execute()
         {
             var model = TrainAndPredict();
             Evaluate(model);

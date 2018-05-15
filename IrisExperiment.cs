@@ -5,46 +5,50 @@ using Microsoft.ML.Transforms;
 using System;
 using System.IO;
 
-namespace myApp
+namespace MLExperiments
 {
-    class Program
+
+    // STEP 1: Define your data structures
+
+    // IrisData is used to provide training data, and as 
+    // input for prediction operations
+    // - First 4 properties are inputs/features used to predict the label
+    // - Label is what you are predicting, and is only set when training
+    public class IrisData
+    {
+        [Column("0")]
+        public float SepalLength;
+
+        [Column("1")]
+        public float SepalWidth;
+
+        [Column("2")]
+        public float PetalLength;
+
+        [Column("3")]
+        public float PetalWidth;
+
+        [Column("4")]
+        [ColumnName("Label")]
+        public string Label;
+    }
+
+    // IrisPrediction is the result returned from prediction operations
+    public class IrisPrediction
+    {
+        [ColumnName("PredictedLabel")]
+        public string PredictedLabels;
+    }
+
+    public class IrisExperiment
     {
         static PredictionModel<IrisData, IrisPrediction> model;
-        static string modelPath = "mymodel.zip";
-        // STEP 1: Define your data structures
+        static string modelPath = "Data/iris_model.zip";
+        static string dataPath = "Data/iris-data.txt";
 
-        // IrisData is used to provide training data, and as 
-        // input for prediction operations
-        // - First 4 properties are inputs/features used to predict the label
-        // - Label is what you are predicting, and is only set when training
-        public class IrisData
+        public static void Execute()
         {
-            [Column("0")]
-            public float SepalLength;
-
-            [Column("1")]
-            public float SepalWidth;
-
-            [Column("2")]
-            public float PetalLength;
-
-            [Column("3")]
-            public float PetalWidth;
-
-            [Column("4")]
-            [ColumnName("Label")]
-            public string Label;
-        }
-
-        // IrisPrediction is the result returned from prediction operations
-        public class IrisPrediction
-        {
-            [ColumnName("PredictedLabel")]
-            public string PredictedLabels;
-        }
-
-        static void Main(string[] args)
-        {
+            Console.WriteLine("Executing Iris Experiment");
             if (File.Exists(modelPath))
             {
                 Console.WriteLine("Using existing model");
@@ -58,7 +62,6 @@ namespace myApp
 
                 // If working in Visual Studio, make sure the 'Copy to Output Directory' 
                 // property of iris-data.txt is set to 'Copy always'
-                string dataPath = "iris-data.txt";
                 pipeline.Add(new TextLoader<IrisData>(dataPath, separator: ","));
 
                 // STEP 3: Transform your data
@@ -94,6 +97,7 @@ namespace myApp
             });
 
             Console.WriteLine($"Predicted flower type is: {prediction.PredictedLabels}");
+            Console.ReadLine();
         }
     }
 }
