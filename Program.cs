@@ -7,6 +7,7 @@
             DiabetesExperiment.Execute();
             IrisExperiment.Execute();
             SentimentExperiment.Execute();
+            LegoSetsExperiment.Execute();
         }
     }
 }
